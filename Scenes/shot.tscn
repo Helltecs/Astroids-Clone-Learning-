@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dch2uo3qnod05"]
+
+[ext_resource type="Script" path="res://Scripts/Shot.gd" id="1_ksm7y"]
+[ext_resource type="Texture2D" uid="uid://boy61ksdvg508" path="res://PlayerSprites/shot.png" id="2_l6f6f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g4gok"]
+size = Vector2(2, 17)
+
+[node name="Shot" type="Area2D" groups=["shots"]]
+script = ExtResource("1_ksm7y")
+speed = 300.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(2, 7)
+scale = Vector2(0.0892448, 0.0895484)
+texture = ExtResource("2_l6f6f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_g4gok")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(2.38419e-07, -0.5)
+scale = Vector2(0.5, 0.95)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

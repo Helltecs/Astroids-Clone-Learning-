@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://66lf232en86o"]
+
+[ext_resource type="Script" path="res://Scripts/Astroids.gd" id="1_istgp"]
+[ext_resource type="Texture2D" uid="uid://dj4kvco2ussnx" path="res://Astroid.png" id="2_2o11j"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_eadkg"]
+radius = 43.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m8iyc"]
+radius = 45.0444
+
+[node name="Astroids" type="RigidBody2D" groups=["astroids"]]
+gravity_scale = 0.0
+contact_monitor = true
+script = ExtResource("1_istgp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource("CircleShape2D_eadkg")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.71, 1.71)
+texture = ExtResource("2_2o11j")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-1.90735e-06, -0.499999)
+scale = Vector2(2.9, 2.95)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_m8iyc")
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

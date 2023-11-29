@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://suedaukxo11w"]
+
+[ext_resource type="Script" path="res://Scripts/SubAstroids.gd" id="1_s1pk5"]
+[ext_resource type="Texture2D" uid="uid://dj4kvco2ussnx" path="res://Astroid.png" id="2_nkl2k"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m8iyc"]
+radius = 45.0444
+
+[node name="SubAstroids" type="Node2D" groups=["astroids", "small_astroids"]]
+script = ExtResource("1_s1pk5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.745, 1.745)
+texture = ExtResource("2_nkl2k")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-1.90735e-06, -0.499999)
+scale = Vector2(2.9, 2.95)
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_m8iyc")
+
+[node name="CleanClutter" type="Timer" parent="."]
+wait_time = 4.0
+autostart = true
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="CleanClutter" to="." method="_on_clean_clutter_timeout"]

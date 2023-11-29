@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://bumfgerhdgduv"]
+
+[ext_resource type="Script" path="res://Scripts/main.gd" id="1_1rev3"]
+[ext_resource type="PackedScene" uid="uid://xlxgbhnoi70e" path="res://Scenes/Player.tscn" id="1_48fuo"]
+[ext_resource type="PackedScene" uid="uid://66lf232en86o" path="res://Scenes/astroid.tscn" id="2_ugrm6"]
+[ext_resource type="PackedScene" uid="uid://dch2uo3qnod05" path="res://Scenes/shot.tscn" id="3_4qtju"]
+[ext_resource type="PackedScene" uid="uid://c2m1up82pqbhx" path="res://Scenes/hud.tscn" id="4_s1sbc"]
+[ext_resource type="AudioStream" uid="uid://denvighqfkea7" path="res://Sounds/677438__musicbymisterbates__black-hole-short-free-music.mp3" id="6_0csb2"]
+[ext_resource type="AudioStream" uid="uid://cr20o0bjc2y4h" path="res://Sounds/39628__anicator__sci-fi-ambient-01.wav" id="7_4rsm4"]
+
+[sub_resource type="Curve2D" id="Curve2D_b5640"]
+_data = {
+"points": PackedVector2Array(-14.8325, 1.05946, 14.8325, -1.05946, -2, -2, 0, 0, 0, 0, 1153, 1, 0, 0, 0, 0, 1155.6, 294.257, 0, 0, 0, 0, 1153, 646, 0, 0, 0, 0, -1, 645, 0, 0, 0, 0, -2, -2)
+}
+point_count = 6
+
+[node name="Main" type="Node"]
+script = ExtResource("1_1rev3")
+astroid_scene = ExtResource("2_ugrm6")
+shot_scene = ExtResource("3_4qtju")
+metadata/_edit_horizontal_guides_ = [650.0]
+metadata/_edit_vertical_guides_ = [1155.0]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(-71.716, -68.3521)
+scale = Vector2(1.14202, 1.21726)
+curve = SubResource("Curve2D_b5640")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-2, -2)
+rotation = -0.0713072
+
+[node name="Player" parent="." instance=ExtResource("1_48fuo")]
+position = Vector2(576, 320)
+decceleration = 0.1
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 1.5
+
+[node name="DifficultyTimer" type="Timer" parent="."]
+wait_time = 30.0
+
+[node name="HUD" parent="." instance=ExtResource("4_s1sbc")]
+metadata/_edit_horizontal_guides_ = [0.0]
+metadata/_edit_vertical_guides_ = [0.0, 0.0]
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(576, 320)
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_0csb2")
+volume_db = -11.244
+
+[node name="Ambient" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_4rsm4")
+
+[connection signal="dead" from="Player" to="." method="_on_player_dead"]
+[connection signal="hit" from="Player" to="." method="_on_player_hit"]
+[connection signal="shoot" from="Player" to="." method="_on_player_shoot"]
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="DifficultyTimer" to="." method="_on_difficulty_timer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="_on_hud_start_game"]
+[connection signal="finished" from="Music" to="." method="_on_music_finished"]
+[connection signal="finished" from="Ambient" to="." method="_on_ambient_finished"]
